@@ -1,4 +1,5 @@
 import $ from "jquery";
+import { map, take } from "rxjs/operators";
 import { User } from "./user";
 import { UserService } from "./user.service";
 
@@ -8,8 +9,12 @@ const SECOND_USER_DB = "https://my-json-server.typicode.com/matteo-daverio/user-
 let users = new Array<User>();
 
 async function populateArray() {
-    const firstUsers = await UserService.getUsers<Array<User>>(FIRST_USER_DB);
-    const secondUsers = await UserService.getUsers<Array<User>>(SECOND_USER_DB);
+    const firstUsers = await UserService.getUsers<Array<User>>(FIRST_USER_DB)
+        .pipe(
+            map(users => users.filter(user => user.id > 2))
+        )
+        .toPromise();
+    const secondUsers = await UserService.getUsers<Array<User>>(SECOND_USER_DB).toPromise();
 
     users = [...firstUsers, ...secondUsers];
 }
