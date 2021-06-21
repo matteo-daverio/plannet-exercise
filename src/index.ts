@@ -25,7 +25,9 @@ function getTable(films: Film[]) : string {
         </thead>
         <tbody>`;
 
-    html += films.map(film => `<tr><td>${film.name}</td><td>${film.duration}</td><td>${film.genre.substr(0, 3)}</td></tr>`);
+    for (const film of films) {
+        html += `<tr><td>${film.name}</td><td>${film.duration}</td><td>${film.genre.substr(0, 3)}</td></tr>`;
+    }
 
     html += "</tbody></table>";
 
